@@ -1,12 +1,82 @@
-language: java
-sudo: true
-dist: trusty
-jdk: oraclejdk12
-addons:
-  apt:
-    packages:
-      - oracle-java12-installer
-before_install:
-  - chmod +x mvnw
-before_script:
-  - chmod +x build.sh
+{
+  "sudo": "required"
+  },
+  "matrix": {
+    "include": [
+      {
+        "env": "DEPLOY='linux'",
+        "jdk": "openjdk11"
+      },
+      {
+        "env": "DEPLOY='linux-12-early-access'",
+        "jdk": "openjdk12"
+      },
+      {
+        "env": "DEPLOY='linux-early-access'",
+        "jdk": "openjdk-ea"
+      },
+      {
+        "env": "DEPLOY='false'",
+        "jdk": "oraclejdk11"
+      },
+      {
+        "os": "osx",
+        "env": "DEPLOY='macos'",
+        "jdk": "openjdk11"
+      },
+      {
+        "os": "osx",
+        "env": "DEPLOY='macos-12-early-access'",
+        "jdk": "openjdk12"
+      },
+      {
+        "os": "osx",
+        "env": "DEPLOY='macos-early-access'",
+        "jdk": "openjdk-ea"
+      },
+      {
+        "env": "DEPLOY='linux-early-access-loom' TAG=\"untagged-014eac50b5442f2f855f\" NAME=\"jdk-13-loom\""
+      },
+      {
+        "env": "DEPLOY='linux-early-access-amber' TAG=\"untagged-014eac50b5442f2f855f\" NAME=\"jdk-13-amber\""
+      },
+      {
+        "env": "DEPLOY='linux-early-access-lworld' TAG=\"untagged-014eac50b5442f2f855f\" NAME=\"jdk-13-lworld\""
+      },
+      {
+        "os": "osx",
+        "env": "DEPLOY='macos-early-access-loom' TAG=\"untagged-014eac50b5442f2f855f\" NAME=\"jdk-13-loom\""
+      },
+      {
+        "os": "osx",
+        "env": "DEPLOY='macos-early-access-amber' TAG=\"untagged-014eac50b5442f2f855f\" NAME=\"jdk-13-amber\""
+      },
+      {
+        "os": "osx",
+        "env": "DEPLOY='macos-early-access-lworld' TAG=\"untagged-014eac50b5442f2f855f\" NAME=\"jdk-13-lworld\""
+      }
+    ]
+  },
+  "script": [
+    "chmod u+x ./build.sh",
+    "./build.sh",
+    "if [ \"$NAME\" == \"jdk-13-lworld\" ]; then sed -i.bak s/JLINK_VM_OPTIONS=/JLINK_VM_OPTIONS=\"\\\"-XX:+EnableValhalla\\\"\"/g ./target/pro/bin/pro  ; fi",
+    "./target/pro/bin/pro version",
+    "./target/pro/bin/pro build test.pro"
+  ],
+  "install": [
+    "java --version"
+  ],
+  "language": "java",
+  "before_deploy": [
+    "cd target",
+    "zip -r ../pro-$DEPLOY.zip pro",
+    "cd .."
+  ],
+  "before_install": [
+    "if [[ -n $TAG ]]; then wget https://github.com/forax/java-next/releases/download/$TAG/$NAME-$TRAVIS_OS_NAME.tar.gz   ; fi",
+    "if [[ -n $TAG ]]; then tar zxvf $NAME-$TRAVIS_OS_NAME.tar.gz   ; fi",
+    "if [[ -n $TAG ]]; then export JAVA_HOME=$NAME   ; fi",
+    "if [[ -n $TAG ]]; then export PATH=$JAVA_HOME/bin:$PATH   ; fi"
+  ]
+}
