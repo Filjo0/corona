@@ -1,10 +1,10 @@
 language: java
-sudo: false # faster builds
-jdk:
-  - oraclejdk12
-  - openjdk12
-install:
-- mvn -N io.takari:maven:wrapper
-- ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+sudo: true
+dist: trusty
+jdk: oraclejdk12
+addons:
+  apt:
+    packages:
+      - oracle-java12-installer
 before_install:
   - chmod +x mvnw
