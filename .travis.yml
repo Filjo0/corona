@@ -6,3 +6,11 @@ jdk: openjdk12
 
 before_install:
   - chmod +x mvnw
+deploy:
+  provider: pages
+  skip_cleanup: true
+  keep-history: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist/
+  on:
+    branch: master
