@@ -3,3 +3,8 @@ sudo: false # faster builds
 jdk:
   - oraclejdk12
   - openjdk12
+install:
+- mvn -N io.takari:maven:wrapper
+- ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+before_install:
+  - chmod +x mvnw
