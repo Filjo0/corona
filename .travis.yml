@@ -1,12 +1,6 @@
 language: java
 sudo: true
 dist: trusty
-jdk: oraclejdk9
-addons:
-  apt:
-    packages:
-      - oracle-java9-installer
-before_install:
-  - chmod +x mvnw
+jdk: oraclejdk12
 install:
   - java --version
