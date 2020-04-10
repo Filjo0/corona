@@ -13,12 +13,11 @@
 <body>
 
 
+
+
 <div class="container">
 
-        <h1>COVID-19 Tracker Application</h1>
-        <p>This application lists the current number of cases reported across the world</p>
-
-
+    <div th:insert="~{nav.html :: nav}"></div>
 
     <div class="jumbotron">
         <h1 class="display-4" th:text="${totalReportedCases}">Total Cases</h1>
@@ -26,7 +25,6 @@
             <script>
             var dt = new Date();
             document.getElementById("datetime").innerHTML = dt.toLocaleDateString();
-
 
 
             </script>
