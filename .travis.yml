@@ -6,3 +6,14 @@ jdk: openjdk12
 
 before_install:
   - chmod +x mvnw
+
+deploy:
+  skip_cleanup: true
+  provider: elasticbeanstalk
+  access-key-id: <key>
+  secret-access-key: <secret>
+  region: us-east-1
+  app: <app-name>
+  env: <app-env>
+  bucket_name: <bucket-name>
+  zip_file: './web/build/libs/app-0.0.1-SNAPSHOT.war'
