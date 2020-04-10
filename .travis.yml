@@ -1,41 +1,12 @@
-sudo: required
-
 language: java
-
-matrix:
-  include:
-
-    - env: DEPLOY='linux'
-      jdk: openjdk11
-      
-    - env: DEPLOY='linux-12-early-access'
-      jdk: openjdk12
-
-    - env: DEPLOY='linux-early-access'
-      jdk: openjdk-ea
-
-    - env: DEPLOY='false'
-      jdk: oraclejdk11
-
-    - env: DEPLOY='macos'
-      os: osx
-      jdk: openjdk11
-      
-    - env: DEPLOY='macos-12-early-access'
-      os: osx
-      jdk: openjdk12
-
-    - env: DEPLOY='macos-early-access'
-      os: osx
-      jdk: openjdk-ea
-
-#  allow_failures:
-#    - jdk: openjdk-ea
-
-
+sudo: true
+dist: trusty
+jdk: oraclejdk9
+addons:
+  apt:
+    packages:
+      - oracle-java9-installer
+before_install:
+  - chmod +x mvnw
 install:
   - java --version
-
-script:
-  - chmod u+x ./build.sh
-  - ./build.sh
