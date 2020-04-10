@@ -1,6 +1,8 @@
+
 language: java
 sudo: true
 dist: trusty
-jdk: oraclejdk12
-install:
-  - java --version
+jdk: openjdk12
+
+before_install:
+  - chmod +x mvnw
