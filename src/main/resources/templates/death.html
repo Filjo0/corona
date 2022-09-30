@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="eng">
 
 <head>
     <title>COVID-19 Tracker Application</title>
@@ -22,8 +22,8 @@
         <h1 class="display-4" th:text="${totalReportedCases}">Total Cases</h1>
         <p class="lead">Total deaths reported for today <span id="datetime"></span>
             <script>
-            var dt = new Date();
-            document.getElementById("datetime").innerHTML = dt.toLocaleDateString();
+                const dt = new Date();
+                document.getElementById("datetime").innerHTML = dt.toLocaleDateString();
 
 
 
