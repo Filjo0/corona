@@ -1,11 +1,11 @@
 package org.filjo.corona.services;
 
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.filjo.corona.models.LocationStats;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
@@ -43,12 +43,13 @@ public class BaseService {
     }
 
     public HttpResponse<String> getStringHttpResponse(String link) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(link))
-                .build();
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(link))
+                    .build();
 
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
+        }
     }
 
     public List<LocationStats> getAllStats() {

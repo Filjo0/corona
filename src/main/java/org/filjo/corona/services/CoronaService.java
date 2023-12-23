@@ -1,10 +1,10 @@
 package org.filjo.corona.services;
 
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -21,13 +21,15 @@ public class CoronaService extends BaseService {
     public void fetchCoronaData() throws IOException, InterruptedException {
         super.fetchCoronaData();
     }
+
     @Override
     public HttpResponse<String> getStringHttpResponse(String link) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(CORONA_URL))
-                .build();
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(CORONA_URL))
+                    .build();
 
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
+        }
     }
 }
